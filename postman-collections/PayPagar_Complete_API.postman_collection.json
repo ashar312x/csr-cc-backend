@@ -1,0 +1,4104 @@
+{
+  "info": {
+    "_postman_id": "dc8082ff-5758-4b0a-98d1-1ac823200259",
+    "name": "PayPagar Complete API Collection",
+    "description": "Complete API collection for PayPagar Backend - Users, Notifications, Lookup, and File Upload",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "29804237",
+    "_collection_link": "https://go.postman.co/collection/29804237-dc8082ff-5758-4b0a-98d1-1ac823200259?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Create User (Register)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"SecurePass123\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"phNumber\": \"+1234567890\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/users/v1/create",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "v1",
+                "create"
+              ]
+            },
+            "description": "Register a new user account"
+          },
+          "response": []
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{Grotto Token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"SecurePass123\",\n  \"firstName\": \"Johns\",\n  \"lastName\": \"Doe\",\n  \"phNumber\": \"+1234567890\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/users/v1/update",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "v1",
+                "update"
+              ]
+            },
+            "description": "Register a new user account"
+          },
+          "response": []
+        },
+        {
+          "name": "Update User Copy",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{Grotto Token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"SecurePass123\",\n  \"firstName\": \"Johns\",\n  \"lastName\": \"Doe\",\n  \"phNumber\": \"+1234567890\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/users/v1/update",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "v1",
+                "update"
+              ]
+            },
+            "description": "Register a new user account"
+          },
+          "response": []
+        },
+        {
+          "name": "Change Password",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{Grotto Token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"SecurePass123\",\n  \"firstName\": \"Johns\",\n  \"lastName\": \"Doe\",\n  \"phNumber\": \"+1234567890\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/users/v1/update",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "v1",
+                "update"
+              ]
+            },
+            "description": "Register a new user account"
+          },
+          "response": []
+        },
+        {
+          "name": "Login User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200 || pm.response.code === 201) {",
+                  "    var jsonData = pm.response.json();",
+                  "    if (jsonData.data && jsonData.data.token) {",
+                  "        pm.environment.set(\"auth_token\", jsonData.data.token);",
+                  "        console.log(\"Token saved:\", jsonData.data.token);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"{{email}}\",\n    \"password\": \"{{password}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/users/v1/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "v1",
+                "login"
+              ]
+            },
+            "description": "Login with email and password. Token will be automatically saved to environment."
+          },
+          "response": []
+        },
+        {
+          "name": "Admin Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200 || pm.response.code === 201) {",
+                  "    var jsonData = pm.response.json();",
+                  "    if (jsonData.data && jsonData.data.token) {",
+                  "        pm.environment.set(\"auth_token\", jsonData.data.token);",
+                  "        console.log(\"Token saved:\", jsonData.data.token);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"{{email}}\",\n    \"password\": \"{{password}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/users/v1/admin-login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "v1",
+                "admin-login"
+              ]
+            },
+            "description": "Login for admins with email and password. Token will be automatically saved to environment."
+          },
+          "response": []
+        },
+        {
+          "name": "Get User Info",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/v1/user",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "v1",
+                "user"
+              ]
+            },
+            "description": "Get current logged-in user information"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Me (My Profile)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/v1/me",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "v1",
+                "me"
+              ]
+            },
+            "description": "Get full profile from token â€” user info, company, role, and permissions"
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Users",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/users/v1/users?page=1&size=10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "v1",
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                },
+                {
+                  "key": "filters",
+                  "value": "",
+                  "description": "Optional filters",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Get paginated list of all users"
+          },
+          "response": []
+        },
+        {
+          "name": "Admin - Create User",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"roleId\": 2,\n  \"phNumber\": \"+923001234567\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/users/v1/admin/create-user",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "v1",
+                "admin",
+                "create-user"
+              ]
+            },
+            "description": "Admin creates a new user. companyId auto-resolved from JWT token. userType auto-set from role name. Default password: Abc123@@. Required: firstName, lastName, email, roleId. Optional: phNumber."
+          },
+          "response": []
+        },
+        {
+          "name": "Admin - Update User",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Updated\",\n  \"email\": \"john.updated@example.com\",\n  \"roleId\": 2,\n  \"userType\": \"employee\",\n  \"phNumber\": \"+923009876543\",\n  \"isActive\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/users/v1/admin/update-user/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "v1",
+                "admin",
+                "update-user",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "User ID to update"
+                }
+              ]
+            },
+            "description": "Admin updates an existing user. All fields optional. roleId change swaps role. isActive: false = inactive (soft delete). userType optional override."
+          },
+          "response": []
+        },
+        {
+          "name": "Onboard Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200 || pm.response.code === 201) {",
+                  "    var jsonData = pm.response.json();",
+                  "    if (jsonData.data && jsonData.data.token) {",
+                  "        pm.environment.set(\"auth_token\", jsonData.data.token);",
+                  "        console.log(\"Token saved:\", jsonData.data.token);",
+                  "        console.log(\"isFirstLogin:\", jsonData.data.isFirstLogin);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"zawar8@mailinator.com\",\n    \"password\": \"Abc123@@\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/users/v1/onboard-login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "v1",
+                "onboard-login"
+              ]
+            },
+            "description": "Login for onboarder users. Returns isFirstLogin flag. If isFirstLogin is true, redirect user to change password page."
+          },
+          "response": []
+        },
+        {
+          "name": "Change Password",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"currentPassword\": \"Abc123@@\",\n    \"newPassword\": \"NewPass123@@\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/users/v1/change-password",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "v1",
+                "change-password"
+              ]
+            },
+            "description": "Change password for logged-in user. On success, sets isFirstLogin to false â€” onboarder won't be prompted again on next login."
+          },
+          "response": []
+        }
+      ],
+      "description": "User authentication endpoints"
+    },
+    {
+      "name": "Notifications - User",
+      "item": [
+        {
+          "name": "Get User Notifications",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/notifications/v1/user?page=1&size=10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notifications",
+                "v1",
+                "user"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                },
+                {
+                  "key": "filters",
+                  "value": "",
+                  "description": "Optional filters",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Get paginated list of user notifications"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Unread Notifications",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/notifications/v1/user/unread",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notifications",
+                "v1",
+                "user",
+                "unread"
+              ]
+            },
+            "description": "Get all unread notifications for current user"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Unread Count",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/notifications/v1/user/unread-count",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notifications",
+                "v1",
+                "user",
+                "unread-count"
+              ]
+            },
+            "description": "Get count of unread notifications"
+          },
+          "response": []
+        },
+        {
+          "name": "Mark Notification as Read",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/notifications/v1/user/:id/read",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notifications",
+                "v1",
+                "user",
+                ":id",
+                "read"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Notification ID"
+                }
+              ]
+            },
+            "description": "Mark a specific notification as read"
+          },
+          "response": []
+        },
+        {
+          "name": "Bulk Create Notifications",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"title\": \"Welcome Notification\",\n    \"message\": \"Welcome to our platform!\",\n    \"type\": \"in-app\",\n    \"userId\": 1\n  },\n  {\n    \"title\": \"Second Notification\",\n    \"message\": \"This is another notification\",\n    \"type\": \"push\",\n    \"userId\": 2\n  }\n]"
+            },
+            "url": {
+              "raw": "{{base_url}}/notifications/v1/bulk-create",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notifications",
+                "v1",
+                "bulk-create"
+              ]
+            },
+            "description": "Create multiple notifications at once"
+          },
+          "response": []
+        }
+      ],
+      "description": "User notification endpoints"
+    },
+    {
+      "name": "Notifications - Admin",
+      "item": [
+        {
+          "name": "Create Admin Broadcast",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"System Maintenance Notice\",\n  \"message\": \"Our system will undergo maintenance on Sunday from 2 AM to 6 AM. Services will be temporarily unavailable.\",\n  \"type\": \"push,email,in-app\",\n  \"image\": \"https://example.com/maintenance.jpg\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/notifications/v1/admin/broadcast",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notifications",
+                "v1",
+                "admin",
+                "broadcast"
+              ]
+            },
+            "description": "Create a broadcast notification to all users (requires admin approval)"
+          },
+          "response": []
+        },
+        {
+          "name": "Approve Broadcast",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notificationId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/notifications/v1/admin/broadcast/approve",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notifications",
+                "v1",
+                "admin",
+                "broadcast",
+                "approve"
+              ]
+            },
+            "description": "Approve a pending broadcast notification"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Vendor Broadcast Requests",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/notifications/v1/admin/vendor-broadcast-requests?page=1&size=10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notifications",
+                "v1",
+                "admin",
+                "vendor-broadcast-requests"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                },
+                {
+                  "key": "filters",
+                  "value": "",
+                  "description": "Optional filters",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Get all pending vendor broadcast requests for admin approval"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Admin Broadcast History",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/notifications/v1/admin/broadcast-history?page=1&size=10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notifications",
+                "v1",
+                "admin",
+                "broadcast-history"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                },
+                {
+                  "key": "filters",
+                  "value": "",
+                  "description": "Optional filters",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Get history of all admin broadcasts"
+          },
+          "response": []
+        }
+      ],
+      "description": "Admin notification management endpoints"
+    },
+    {
+      "name": "Notifications - Vendor",
+      "item": [
+        {
+          "name": "Create Vendor Broadcast",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Special Offer for Our Customers\",\n  \"message\": \"Get 20% off on your next booking! Use code SAVE20\",\n  \"type\": \"push,email\",\n  \"image\": \"https://example.com/offer.jpg\",\n  \"userIds\": [1, 2, 3]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/notifications/v1/vendor/broadcast",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notifications",
+                "v1",
+                "vendor",
+                "broadcast"
+              ]
+            },
+            "description": "Create a broadcast notification to vendor's customers (requires admin approval)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Vendor Customers Count",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/notifications/v1/vendor/customers-count",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notifications",
+                "v1",
+                "vendor",
+                "customers-count"
+              ]
+            },
+            "description": "Get total count of vendor's customers"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Vendor Broadcast History",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/notifications/v1/vendor/broadcast-history?page=1&size=10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "notifications",
+                "v1",
+                "vendor",
+                "broadcast-history"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                },
+                {
+                  "key": "filters",
+                  "value": "",
+                  "description": "Optional filters",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Get history of vendor's broadcast notifications"
+          },
+          "response": []
+        }
+      ],
+      "description": "Vendor notification endpoints"
+    },
+    {
+      "name": "Lookup",
+      "item": [
+        {
+          "name": "Create Lookup",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Service Categories\",\n  \"parent\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/lookup/v1/create",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "lookup",
+                "v1",
+                "create"
+              ]
+            },
+            "description": "Create a new lookup entry (parent or child)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Parents",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/lookup/v1/get-parents",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "lookup",
+                "v1",
+                "get-parents"
+              ]
+            },
+            "description": "Get all parent lookup categories"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Parent with Children",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/lookup/v1/get-parent-child/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "lookup",
+                "v1",
+                "get-parent-child",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Parent Lookup ID"
+                }
+              ]
+            },
+            "description": "Get a parent lookup with all its children"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Lookup",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/lookup/v1/delete/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "lookup",
+                "v1",
+                "delete",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Lookup ID to delete"
+                }
+              ]
+            },
+            "description": "Delete a lookup entry by ID"
+          },
+          "response": []
+        }
+      ],
+      "description": "Lookup/Category management endpoints"
+    },
+    {
+      "name": "File Upload",
+      "item": [
+        {
+          "name": "Upload CV/Document",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "description": "PDF file (max 5MB)",
+                  "value": null
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/documents/upload-cv",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "documents",
+                "upload-cv"
+              ]
+            },
+            "description": "Upload a PDF document (CV/Resume). Max size: 5MB"
+          },
+          "response": []
+        }
+      ],
+      "description": "File upload endpoints"
+    },
+    {
+      "name": "Roles",
+      "item": [
+        {
+          "name": "Create Role",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"companyId\": 1,\n  \"name\": \"Admin\",\n  \"description\": \"Administrator role with full access\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/roles/v1/create",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "roles",
+                "v1",
+                "create"
+              ]
+            },
+            "description": "Create a new role for a company"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Role by ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/roles/v1/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "roles",
+                "v1",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Role ID"
+                }
+              ]
+            },
+            "description": "Get a specific role by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Roles by Company",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/roles/v1/company/:companyId",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "roles",
+                "v1",
+                "company",
+                ":companyId"
+              ],
+              "variable": [
+                {
+                  "key": "companyId",
+                  "value": "1",
+                  "description": "Company ID"
+                }
+              ]
+            },
+            "description": "Get all roles for a specific company"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Role",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Super Admin\",\n  \"description\": \"Updated role description\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/roles/v1/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "roles",
+                "v1",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Role ID"
+                }
+              ]
+            },
+            "description": "Update an existing role"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Role",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/roles/v1/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "roles",
+                "v1",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Role ID"
+                }
+              ]
+            },
+            "description": "Delete a role by ID"
+          },
+          "response": []
+        }
+      ],
+      "description": "Role management endpoints"
+    },
+    {
+      "name": "Permissions",
+      "item": [
+        {
+          "name": "Create Permission",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Create User\",\n  \"resource\": \"users\",\n  \"action\": \"create\",\n  \"description\": \"Permission to create new users\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/permissions/v1/create",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "permissions",
+                "v1",
+                "create"
+              ]
+            },
+            "description": "Create a new permission"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Permission by ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/permissions/v1/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "permissions",
+                "v1",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Permission ID"
+                }
+              ]
+            },
+            "description": "Get a specific permission by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Permissions",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/permissions/v1/all",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "permissions",
+                "v1",
+                "all"
+              ]
+            },
+            "description": "Get all permissions"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Permission",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Create & Edit User\",\n  \"description\": \"Updated permission description\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/permissions/v1/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "permissions",
+                "v1",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Permission ID"
+                }
+              ]
+            },
+            "description": "Update an existing permission"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Permission",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/permissions/v1/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "permissions",
+                "v1",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Permission ID"
+                }
+              ]
+            },
+            "description": "Delete a permission by ID"
+          },
+          "response": []
+        }
+      ],
+      "description": "Permission management endpoints"
+    },
+    {
+      "name": "Role-Permissions",
+      "item": [
+        {
+          "name": "Assign Permission to Role",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roleId\": 1,\n  \"permissionIds\": [\n    1,\n    2,\n    3\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/role-permissions/v1/assign",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "role-permissions",
+                "v1",
+                "assign"
+              ]
+            },
+            "description": "Bulk assign permissions to a role (Syncs state)"
+          },
+          "response": []
+        },
+        {
+          "name": "Remove Permission from Role",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"roleId\": 1,\n  \"permissionId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/role-permissions/v1/remove",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "role-permissions",
+                "v1",
+                "remove"
+              ]
+            },
+            "description": "Remove a permission from a role"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Permissions by Role",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/role-permissions/v1/role/:roleId",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "role-permissions",
+                "v1",
+                "role",
+                ":roleId"
+              ],
+              "variable": [
+                {
+                  "key": "roleId",
+                  "value": "1",
+                  "description": "Role ID"
+                }
+              ]
+            },
+            "description": "Get all permissions assigned to a specific role"
+          },
+          "response": []
+        }
+      ],
+      "description": "Role-Permission mapping endpoints for managing role permissions"
+    },
+    {
+      "name": "Company",
+      "item": [
+        {
+          "name": "Create Company",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Tech Solutions Inc\",\n  \"description\": \"A leading technology solutions provider\",\n  \"status\": \"active\",\n  \"logo\": \"https://example.com/logo.png\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/company/v1/create",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "company",
+                "v1",
+                "create"
+              ]
+            },
+            "description": "Create a new company"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Company by ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/company/v1/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "company",
+                "v1",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Company ID"
+                }
+              ]
+            },
+            "description": "Get a specific company by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Companies",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/company/v1/all",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "company",
+                "v1",
+                "all"
+              ]
+            },
+            "description": "Get all companies"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Company",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Tech Solutions International\",\n  \"description\": \"Updated company description\",\n  \"status\": \"active\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/company/v1/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "company",
+                "v1",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Company ID"
+                }
+              ]
+            },
+            "description": "Update an existing company"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Company",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/company/v1/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "company",
+                "v1",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Company ID"
+                }
+              ]
+            },
+            "description": "Delete a company by ID"
+          },
+          "response": []
+        }
+      ],
+      "description": "Company management endpoints"
+    },
+    {
+      "name": "Company-User",
+      "item": [
+        {
+          "name": "Create Company-User Mapping",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"companyId\": 1,\n  \"userId\": 2,\n  \"isInitialAdmin\": false,\n  \"joinedAt\": \"2024-03-06T10:00:00Z\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/company-user/v1/create",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "company-user",
+                "v1",
+                "create"
+              ]
+            },
+            "description": "Create a new company-user mapping (assign user to company)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Company-User by ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/company-user/v1/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "company-user",
+                "v1",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Company-User Mapping ID"
+                }
+              ]
+            },
+            "description": "Get a specific company-user mapping by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Company-Users",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/company-user/v1/all?page=1&size=10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "company-user",
+                "v1",
+                "all"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                },
+                {
+                  "key": "filters",
+                  "value": "",
+                  "description": "Optional filters (companyId, userId, isInitialAdmin, dateFrom, dateTo)",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Get paginated list of all company-user mappings"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Users by Company",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/company-user/v1/by-company/:companyId",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "company-user",
+                "v1",
+                "by-company",
+                ":companyId"
+              ],
+              "variable": [
+                {
+                  "key": "companyId",
+                  "value": "1",
+                  "description": "Company ID"
+                }
+              ]
+            },
+            "description": "Get all users associated with a specific company"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Companies by User",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/company-user/v1/by-user/:userId",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "company-user",
+                "v1",
+                "by-user",
+                ":userId"
+              ],
+              "variable": [
+                {
+                  "key": "userId",
+                  "value": "2",
+                  "description": "User ID"
+                }
+              ]
+            },
+            "description": "Get all companies associated with a specific user"
+          },
+          "response": []
+        },
+        {
+          "name": "Remove Company-User Mapping",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"companyId\": 1,\n  \"userId\": 2\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/company-user/v1/remove",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "company-user",
+                "v1",
+                "remove"
+              ]
+            },
+            "description": "Remove a company-user mapping (unassign user from company)"
+          },
+          "response": []
+        }
+      ],
+      "description": "Company-User mapping endpoints for managing user-company relationships"
+    },
+    {
+      "name": "Leads",
+      "item": [
+        {
+          "name": "Create Lead",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john.doe2@mailinator.com\",\n  \"phone\": \"+1234567890\",\n  \"source\": \"website\",\n  \"title\": \"Interested in Premium Service\",\n\"status\": \"pending\",\n  \"description\": \"Interested in premium services\",\n\"metadata\": \"{\\\"campaign\\\": \\\"summer2024\\\", \\\"referrer\\\": \\\"google\\\"}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/leads/v1/create",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "leads",
+                "v1",
+                "create"
+              ]
+            },
+            "description": "Create a new lead"
+          },
+          "response": []
+        },
+        {
+          "name": "Public Create Lead",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Public Lead\",\n  \"title\": \"External Inquiry\",\n  \"source\": \"Portal\",\n  \"email\": \"public@mailinator.com\",\n  \"phone\": \"+0987654321\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/leads/v1/public/create",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "leads",
+                "v1",
+                "public",
+                "create"
+              ]
+            },
+            "description": "Create a new lead (Public - No Auth)"
+          },
+          "response": []
+        },
+        {
+          "name": "Public Update Lead",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Public Lead Updated\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/leads/v1/public/update/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "leads",
+                "v1",
+                "public",
+                "update",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Update an existing lead (Public - No Auth)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Lead by ID",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/leads/v1/lead/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "leads",
+                "v1",
+                "lead",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Lead ID"
+                }
+              ]
+            },
+            "description": "Get a specific lead by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Leads",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/leads/v1/lead-all?page=1&size=10&filters=",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "leads",
+                "v1",
+                "lead-all"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                },
+                {
+                  "key": "filters",
+                  "value": "",
+                  "description": "Optional filters"
+                }
+              ]
+            },
+            "description": "Get paginated list of all leads"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Lead",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe Updated\",\n  \"status\": \"contacted\",\n  \"notes\": \"Follow-up scheduled for next week\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/leads/v1/update/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "leads",
+                "v1",
+                "update",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "6",
+                  "description": "Lead ID"
+                }
+              ]
+            },
+            "description": "Update an existing lead"
+          },
+          "response": []
+        },
+        {
+          "name": "Send Onboard Email",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/leads/v1/send-onboard-email/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "leads",
+                "v1",
+                "send-onboard-email",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "13",
+                  "description": "Lead ID to send onboard email to"
+                }
+              ]
+            },
+            "description": "Send onboarding email to a lead. Creates an onboarder user if not exists and sends login credentials."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Lead",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/leads/v1/delete/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "leads",
+                "v1",
+                "delete",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "3",
+                  "description": "Lead ID"
+                }
+              ]
+            },
+            "description": "Delete a lead by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Lead Evidence",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"Sample evidence text\",\n  \"imageUrl\": \"https://example.com/image.png\",\n  \"fileUrl\": \"https://example.com/document.pdf\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/leads/v1/1/evidence",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "leads",
+                "v1",
+                "1",
+                "evidence"
+              ]
+            },
+            "description": "Add evidence to a lead"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Lead Evidence",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/leads/v1/1/evidence",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "leads",
+                "v1",
+                "1",
+                "evidence"
+              ]
+            },
+            "description": "Get all evidence for a lead"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Lead Evidence",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/leads/v1/1/evidence/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "leads",
+                "v1",
+                "1",
+                "evidence",
+                "1"
+              ]
+            },
+            "description": "Delete specific evidence for a lead"
+          },
+          "response": []
+        }
+      ],
+      "description": "Lead management endpoints"
+    },
+    {
+      "name": "User Roles",
+      "item": [
+        {
+          "name": "Assign Role to User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"companyUserId\": 1,\n  \"roleId\": 2\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/user-roles/v1/assign",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "user-roles",
+                "v1",
+                "assign"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Remove Role from User",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"companyUserId\": 1,\n  \"roleId\": 2\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/user-roles/v1/remove",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "user-roles",
+                "v1",
+                "remove"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Roles by Company User",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/user-roles/v1/company-user/:companyUserId",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "user-roles",
+                "v1",
+                "company-user",
+                ":companyUserId"
+              ],
+              "variable": [
+                {
+                  "key": "companyUserId",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "User role management endpoints"
+    },
+    {
+      "name": "Onboarding Company",
+      "item": [
+        {
+          "name": "Create Onboarding Company",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Tech Solutions Ltd\",\n  \"address\": \"123 Business Street\",\n  \"city\": \"Karachi\",\n  \"country\": \"Pakistan\",\n  \"businessCategory\": \"Technology\",\n  \"businessType\": \"Private Limited\",\n  \"ntnNumber\": \"1234567-8\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/onboarding-company/v1/create",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "onboarding-company",
+                "v1",
+                "create"
+              ]
+            },
+            "description": "Create a new onboarding company application"
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Onboarding Companies",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/onboarding-company/v1/all?page=1&size=10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "onboarding-company",
+                "v1",
+                "all"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                },
+                {
+                  "key": "filters[status]",
+                  "value": "pending",
+                  "disabled": true
+                },
+                {
+                  "key": "filters[isApproved]",
+                  "value": "false",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Get all onboarding companies with pagination and filters"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Onboarding Company by ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/onboarding-company/v1/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "onboarding-company",
+                "v1",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Get single onboarding company with attachments and verifications"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Onboarding Companies by User",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/onboarding-company/v1/user/:userId",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "onboarding-company",
+                "v1",
+                "user",
+                ":userId"
+              ],
+              "variable": [
+                {
+                  "key": "userId",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Get all onboarding companies for a specific user"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Onboarding Company",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Tech Solutions Ltd\",\n  \"city\": \"Lahore\",\n  \"status\": \"in_review\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/onboarding-company/v1/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "onboarding-company",
+                "v1",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Update onboarding company details"
+          },
+          "response": []
+        },
+        {
+          "name": "Approve/Reject Onboarding Company",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isApproved\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/onboarding-company/v1/:id/approve",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "onboarding-company",
+                "v1",
+                ":id",
+                "approve"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Approve or reject onboarding company (Admin only)"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Onboarding Company",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/onboarding-company/v1/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "onboarding-company",
+                "v1",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Delete onboarding company"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Onboarding Attachments",
+      "item": [
+        {
+          "name": "Create Attachment",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"onboardingId\": 1,\n  \"documentName\": \"Business Registration Certificate\",\n  \"url\": \"https://example.com/documents/cert.pdf\",\n  \"type\": \"certificate\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/onboarding-attachment/v1/create",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "onboarding-attachment",
+                "v1",
+                "create"
+              ]
+            },
+            "description": "Upload a single attachment for onboarding"
+          },
+          "response": []
+        },
+        {
+          "name": "Bulk Create Attachments",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"onboardingId\": 1,\n    \"documentName\": \"NTN Certificate\",\n    \"url\": \"https://example.com/documents/ntn.pdf\",\n    \"type\": \"ntn\"\n  },\n  {\n    \"onboardingId\": 1,\n    \"documentName\": \"Bank Statement\",\n    \"url\": \"https://example.com/documents/bank.pdf\",\n    \"type\": \"financial\"\n  }\n]"
+            },
+            "url": {
+              "raw": "{{base_url}}/onboarding-attachment/v1/bulk-create",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "onboarding-attachment",
+                "v1",
+                "bulk-create"
+              ]
+            },
+            "description": "Upload multiple attachments at once"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Attachments by Onboarding",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/onboarding-attachment/v1/onboarding/:onboardingId",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "onboarding-attachment",
+                "v1",
+                "onboarding",
+                ":onboardingId"
+              ],
+              "variable": [
+                {
+                  "key": "onboardingId",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Get all attachments for a specific onboarding"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Attachment",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/onboarding-attachment/v1/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "onboarding-attachment",
+                "v1",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Delete an attachment"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Onboarding Verifications",
+      "item": [
+        {
+          "name": "Create Verification",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"onboardingId\": 1,\n  \"columnName\": \"ntnNumber\",\n  \"attachmentUrl\": \"https://example.com/documents/ntn.pdf\",\n  \"reviewDescription\": \"NTN verification pending\",\n  \"status\": \"pending\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/onboarding-verification/v1/create",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "onboarding-verification",
+                "v1",
+                "create"
+              ]
+            },
+            "description": "Create a verification record for a field"
+          },
+          "response": []
+        },
+        {
+          "name": "Bulk Create Verifications",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"onboardingId\": 1,\n    \"columnName\": \"ntnNumber\",\n    \"status\": \"pending\"\n  },\n  {\n    \"onboardingId\": 1,\n    \"columnName\": \"businessCategory\",\n    \"status\": \"pending\"\n  },\n  {\n    \"onboardingId\": 1,\n    \"columnName\": \"address\",\n    \"status\": \"pending\"\n  }\n]"
+            },
+            "url": {
+              "raw": "{{base_url}}/onboarding-verification/v1/bulk-create",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "onboarding-verification",
+                "v1",
+                "bulk-create"
+              ]
+            },
+            "description": "Create multiple verification records at once"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Verifications by Onboarding",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/onboarding-verification/v1/onboarding/:onboardingId",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "onboarding-verification",
+                "v1",
+                "onboarding",
+                ":onboardingId"
+              ],
+              "variable": [
+                {
+                  "key": "onboardingId",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Get all verifications for a specific onboarding"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Verification (Admin Review)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"approved\",\n  \"reviewDescription\": \"NTN verified successfully\",\n  \"verifiedById\": 1,\n  \"verifiedAt\": \"2026-03-12T10:30:00Z\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/onboarding-verification/v1/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "onboarding-verification",
+                "v1",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Update verification status (Admin review)"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Verification",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/onboarding-verification/v1/:id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "onboarding-verification",
+                "v1",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Delete a verification record"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Calling Service",
+      "item": [
+        {
+          "name": "1. Get Health & Stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/calling/v1/health",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "calling",
+                "v1",
+                "health"
+              ]
+            },
+            "description": "Public â€” no auth. Returns active calls, participants, online users, TURN server info."
+          },
+          "response": []
+        },
+        {
+          "name": "2. Get ICE Servers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/calling/v1/ice-servers",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "calling",
+                "v1",
+                "ice-servers"
+              ]
+            },
+            "description": "Public â€” no auth. Returns STUN/TURN ICE server config for WebRTC peer connections."
+          },
+          "response": []
+        },
+        {
+          "name": "3. Get Online Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/calling/v1/online-users",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "calling",
+                "v1",
+                "online-users"
+              ]
+            },
+            "description": "Returns all users currently online in the calling service."
+          },
+          "response": []
+        },
+        {
+          "name": "4. Create Call",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var res = pm.response.json();",
+                  "var callUuid = res && res.data && res.data.callUuid;",
+                  "if (callUuid) {",
+                  "    pm.environment.set('call_uuid', callUuid);",
+                  "    console.log('call_uuid saved:', callUuid);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"callType\": \"video\",\n  \"isGroup\": false,\n  \"maxParticipants\": 2\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/calling/v1/create",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "calling",
+                "v1",
+                "create"
+              ]
+            },
+            "description": "Create a new call. callType: audio | video | screen. Auto-saves call_uuid to env."
+          },
+          "response": []
+        },
+        {
+          "name": "5. Get All Calls",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/calling/v1/calls",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "calling",
+                "v1",
+                "calls"
+              ]
+            },
+            "description": "Get all calls. Optionally filter by status (active | ended)."
+          },
+          "response": []
+        },
+        {
+          "name": "6. Get Call by UUID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/calling/v1/{{call_uuid}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "calling",
+                "v1",
+                "{{call_uuid}}"
+              ]
+            },
+            "description": "Get call details and active participants by callUuid."
+          },
+          "response": []
+        },
+        {
+          "name": "7. Join Call",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var res = pm.response.json();",
+                  "var pUuid = res && res.data && res.data.participant && res.data.participant.participantUuid;",
+                  "if (pUuid) {",
+                  "    pm.environment.set('participant_uuid', pUuid);",
+                  "    console.log('participant_uuid saved:', pUuid);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"callUuid\": \"{{call_uuid}}\",\n  \"userName\": \"John Doe\",\n  \"userId\": \"user-123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/calling/v1/join",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "calling",
+                "v1",
+                "join"
+              ]
+            },
+            "description": "Join a call. Returns participantUuid â€” use this for WebSocket join-call event. Auto-saves participant_uuid to env."
+          },
+          "response": []
+        },
+        {
+          "name": "8. Get Participants",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/calling/v1/{{call_uuid}}/participants",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "calling",
+                "v1",
+                "{{call_uuid}}",
+                "participants"
+              ]
+            },
+            "description": "Get all active (not yet left) participants in a call."
+          },
+          "response": []
+        },
+        {
+          "name": "9. Leave Call",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"callUuid\": \"{{call_uuid}}\",\n  \"participantUuid\": \"{{participant_uuid}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/calling/v1/leave",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "calling",
+                "v1",
+                "leave"
+              ]
+            },
+            "description": "Leave a call. Sets leftAt on participant. Auto-ends call if no participants remain."
+          },
+          "response": []
+        },
+        {
+          "name": "10. End Call (Force)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/calling/v1/{{call_uuid}}/end",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "calling",
+                "v1",
+                "{{call_uuid}}",
+                "end"
+              ]
+            },
+            "description": "Force-end a call. Sets status=ended and marks all participants as left."
+          },
+          "response": []
+        },
+        {
+          "name": "WebSocket Reference (port 4001)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{calling_ws_url}}",
+              "host": [
+                "{{calling_ws_url}}"
+              ]
+            },
+            "description": "Connect: io('http://localhost:4001/calling')\n\n=== CLIENT â†’ SERVER ===\n\nregister-user\n  payload: { userId, userName }\n  response: broadcasts 'users-online' to all clients\n\njoin-call\n  payload: { callUuid, participantUuid, userName }\n  â† get participantUuid from REST Join Call (step 7)\n  response: 'call-joined' to caller, 'participant-joined' to others\n\nsignal  (WebRTC offer/answer/ICE)\n  payload: { callUuid, signal, type, targetParticipantUuid? }\n  response: forwards 'signal' to target or broadcasts to room\n\nsend-call-invitation\n  payload: { targetUserId, callUuid, callType, callerId, callerName }\n  response: 'incoming-call' to target, 'invitation-result' to sender\n\naccept-call\n  payload: { callUuid, callerId }\n  response: 'call-accepted' to caller\n\nreject-call\n  payload: { callUuid, callerId }\n  response: 'call-rejected' to caller\n\nleave-call\n  payload: { callUuid?, reason? }\n  response: 'user-left-call' to room, cleanup\n\n=== SERVER â†’ CLIENT ===\n\nusers-online        OnlineUser[]\nincoming-call       { callUuid, callType, callerId, callerName }\ncall-accepted       { callUuid, acceptedBy, acceptedByName }\ncall-rejected       { callUuid, rejectedBy, rejectedByName }\ncall-joined         { callUuid, participants[], iceServers[] }\nparticipant-joined  { participantUuid, userName, participantCount }\nparticipant-left    { participantUuid, participantCount }\nuser-left-call      { userId, userName, reason }\nsignal              { fromParticipantUuid, signal, type }\ninvitation-result   { success, error? }\nerror               { message }"
+          },
+          "response": []
+        }
+      ],
+      "description": "WebRTC Calling â€” REST via Gateway (port 3000) + WebSocket direct on port 4001 namespace /calling"
+    },
+    {
+      "name": "Earn Wages - Onboarding",
+      "item": [
+        {
+          "name": "Get Onboarding By ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/ew/onboarding/v1/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "ew",
+                "onboarding",
+                "v1",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Fetch Onboarding Submissions + Leads",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/ew/onboarding/v1/submissions/all-with-leads",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "ew",
+                "onboarding",
+                "v1",
+                "submissions",
+                "all-with-leads"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Onboarding By Slug",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/ew/onboarding/v1/private_limited",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "ew",
+                "onboarding",
+                "v1",
+                "private_limited"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Field Values by Submission ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/ew/onboarding/v1/get-values/by-submission-id/:onboarding_submission_id",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "ew",
+                "onboarding",
+                "v1",
+                "get-values",
+                "by-submission-id",
+                ":onboarding_submission_id"
+              ],
+              "variable": [
+                {
+                  "key": "onboarding_submission_id",
+                  "value": "10",
+                  "description": "Onboarding Submission ID"
+                }
+              ]
+            },
+            "description": "Get all field values for a given onboarding submission ID. Returns array of onboarding_field_value records."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Submission Values by ID (Admin)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer <your_token>"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/ew/onboarding/v1/onboardings/get-values-for-admin-by-submission-id/23",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "ew",
+                "onboarding",
+                "v1",
+                "onboardings",
+                "get-values-for-admin-by-submission-id",
+                "23"
+              ]
+            },
+            "description": "Get all field values for a given onboarding submission ID. Returns array of onboarding_field_value records."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Form Submission by Onboarding ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/ew/onboarding/v1/form-submission/:onboardingSlug",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "ew",
+                "onboarding",
+                "v1",
+                "form-submission",
+                ":onboardingSlug"
+              ],
+              "variable": [
+                {
+                  "key": "onboardingSlug",
+                  "value": "Sole Proprietorship"
+                }
+              ]
+            },
+            "description": "Get onboarding submission with form submissions (including fieldValues and approvalRequests) for the authenticated user. Queries: SELECT * FROM onboarding_submissions WHERE onboardingId = :onboardingId AND userId = :userId"
+          },
+          "response": []
+        },
+        {
+          "name": "Onboarding - Update Field Values",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjYsImVtYWlsIjoic29sZTRAbWFpbGluYXRvci5jb20iLCJjb21wYW55SWQiOm51bGwsInJvbGVJZCI6bnVsbCwiaWF0IjoxNzc3Mjg3NTc3LCJleHAiOjE3Nzc0NjAzNzd9.8WVIV4QYHtfR0koNrjqp4lODcPHG6VAvq25TQY6rT_w"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"id\": 8,\n    \"onboardingFieldDefinitionId\": 131,\n    \"fieldValue\": \"Updated value here\",\n    \"onboardingFormSubmissionId\": 9,\n    \"onboardingSubmissionId\": 7\n  },\n  {\n    \"id\": 9,\n    \"onboardingFieldDefinitionId\": 132,\n    \"fieldValue\": \"Another updated value\",\n    \"onboardingFormSubmissionId\": 9,\n    \"onboardingSubmissionId\": 7\n  }\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/ew/onboarding/v1/field-values/upsert",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "ew",
+                "onboarding",
+                "v1",
+                "field-values",
+                "upsert"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Onboarding - Create Field Values",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjYsImVtYWlsIjoic29sZTRAbWFpbGluYXRvci5jb20iLCJjb21wYW55SWQiOm51bGwsInJvbGVJZCI6bnVsbCwiaWF0IjoxNzc3Mjg3NTc3LCJleHAiOjE3Nzc0NjAzNzd9.8WVIV4QYHtfR0koNrjqp4lODcPHG6VAvq25TQY6rT_w"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"id\": null,\n    \"onboardingFieldDefinitionId\": 131,\n    \"fieldValue\": \"Exercitation nihil a\",\n    \"onboardingFormSubmissionId\": 9,\n    \"onboardingSubmissionId\": 7\n  },\n  {\n    \"id\": null,\n    \"onboardingFieldDefinitionId\": 132,\n    \"fieldValue\": \"Dolores quas repelle\",\n    \"onboardingFormSubmissionId\": 9,\n    \"onboardingSubmissionId\": 7\n  }\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/ew/onboarding/v1/field-values/upsert",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "ew",
+                "onboarding",
+                "v1",
+                "field-values",
+                "upsert"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Evidence",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"onboardingFieldValueId\": 1,\n  \"text\": \"Sample evidence text\",\n  \"imageUrl\": \"https://example.com/image.png\",\n  \"fileUrl\": \"https://example.com/file.pdf\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/ew/onboarding/v1/evidence",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "ew",
+                "onboarding",
+                "v1",
+                "evidence"
+              ]
+            },
+            "description": "Create a new evidence record for a field value. Status defaults to 'pending'."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Evidence by Field Value ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/ew/onboarding/v1/evidence/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "ew",
+                "onboarding",
+                "v1",
+                "evidence",
+                "1"
+              ]
+            },
+            "description": "Get all evidence records for a given onboarding_field_value_id."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Evidence (Soft Delete)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/ew/onboarding/v1/evidence/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "ew",
+                "onboarding",
+                "v1",
+                "evidence",
+                "1"
+              ]
+            },
+            "description": "Soft delete an evidence record by its ID (sets is_deleted = true)."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "EW Onboarding Evidence",
+      "item": [
+        {
+          "name": "Get Evidence by Field Value ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/ew/onboarding/v1/evidence/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "ew",
+                "onboarding",
+                "v1",
+                "evidence",
+                "1"
+              ]
+            },
+            "description": "Get all evidence records for a given onboarding_field_value_id."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Evidence (Soft Delete)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/ew/onboarding/v1/evidence/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "ew",
+                "onboarding",
+                "v1",
+                "evidence",
+                "1"
+              ]
+            },
+            "description": "Soft delete an evidence record by its ID (sets is_deleted = true)."
+          },
+          "response": []
+        },
+        {
+          "name": "New Request",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+How to add new service:
+
+1. Run command: nest generate app <service-name>-app
+2. Delete <service-name>-app.controller.spec.ts
+3. Delete <service-name>-app.service.ts
+4. Delete <service-name>-app.controller.ts
+5. Update main.ts
+==============================================
+import { NestFactory } from '@nestjs/core';
+import * as dotenv from 'dotenv';
+import { join } from 'path';
+import { Transport, MicroserviceOptions } from '@nestjs/microservices';
+import { FundmoreConnectServiceAppModule } from './user-services-app.module';
+// Manually load the env file based on the same logic as your module
+dotenv.config({ path: join(process.cwd(), `.env.${process.env.NODE_ENV}`) });
+
+async function bootstrap() {
+  const app = await NestFactory.createMicroservice<MicroserviceOptions>(UserConnectServiceAppModule, {
+    transport: Transport.TCP,
+    options: {
+      host: process.env.DEFAULT_HOST || '0.0.0.0',
+      port: parseInt(process.env.USER_SERVICE_PORT || '3002')
+    },
+  });
+  await app.listen();
+  console.log(`User Connect Service is listening on port ${process.env.USER_SERVICE_PORT}`);
+}
+bootstrap();
+===================================
+Change Relevant variables and service name.
+6. Create modules folder.
+7. Create different modules folder. 
+8. All modules should have example.controller.ts, example.service.ts, example.module.ts
+9. Give there references to <service-name>-app.module.ts

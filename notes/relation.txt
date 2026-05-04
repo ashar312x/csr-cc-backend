@@ -1,0 +1,12 @@
+-> One to Many
+<-> Many to Many
+<- belongs to
+
+User -> Company User;
+Company -> Company User;
+
+role -> role_permission
+permission -> role_permission
+
+Company User -> user_role
+role ->

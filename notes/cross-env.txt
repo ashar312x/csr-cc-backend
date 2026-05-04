@@ -1,0 +1,1 @@
+npm install cross-env --save-dev

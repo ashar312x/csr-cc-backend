@@ -1,0 +1,3 @@
+Ecosystems are files to run all services using one command in pm2.
+
+command: pm2 start ecosystem.development.config.js

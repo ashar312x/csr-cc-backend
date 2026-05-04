@@ -1,0 +1,18 @@
+sudo dnf install -y gcc make cmake openssl-devel libevent-devel sqlite-devel
+
+cd /tmp
+curl -L https://github.com/coturn/coturn/archive/refs/tags/4.6.2.tar.gz -o coturn.tar.gz
+tar -xzf coturn.tar.gz
+cd coturn-4.6.2
+./configure
+make -j$(nproc)
+sudo make install
+
+
+cd /home/ec2-user/practice/turn-server
+sudo bash setup.sh
+
+
+sudo systemctl status coturn
+
+turnutils_stunclient 3.91.182.123

@@ -1,0 +1,11 @@
+for pagiantion: query params should look like this:
+baseUrl/users/v1/users?page=1&size=2&filters[userType]=admin
+console:  { page: '1', size: '2', filters: { userType: 'admin' } }
+
+we can use interface ApiRequest<Pagination<ModelFilter>>>
+ApiRequest will get us userId and data
+Pagination will get us page,size,order and filter object
+ModelFilter will get us the specific model for filters
+
+All paginated response will be based on PaginatedResponse interface
+PaginatedResponse will get us data,page,size,total,totalPages

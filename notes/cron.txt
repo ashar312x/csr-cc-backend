@@ -1,0 +1,27 @@
+4. Handling Cron Jobs in Docker
+Cron jobs work perfectly inside Docker, but there is one critical warning:
+
+The Duplicate Task Problem: If you scale your fundmore-service to 3 replicas in Docker (running 3 containers of the same app), your Cron job will run 3 times.
+
+To prevent this in a microservice environment, you have three options:
+
+The Singleton Service: Only run the Cron job in one specific service that is never scaled.
+
+Distributed Locking (Redis): Use a library like redlock or a shared Redis key to ensure only one container "grabs" the job.
+
+The Dedicated "Cron-Service": Create a single container in your docker-compose.yaml whose only job is to run tasks.
+
+5. Making it Dynamic with .env
+Since you have 100+ APIs, you might want to change the frequency without rebuilding the code. You can use the ConfigService for this.
+
+In your Service:
+
+@Injectable()
+export class TasksService {
+  constructor(private config: ConfigService) {}
+
+  @Cron(process.env.SYNC_CRON_TIME || '0 0 * * * *')
+  handleTask() {
+    // Logic...
+  }
+}
