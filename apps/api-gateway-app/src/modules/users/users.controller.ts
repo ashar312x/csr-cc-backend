@@ -10,7 +10,6 @@ import { ApiRequest } from '@app/common/interfaces/request.interface';
 import type { PaginatedResponse, Pagination } from '@app/common/interfaces/pagination.interface';
 import { AdminCreateUserDto, AdminUpdateUserDto, LoginUserDto, CreateUserDto, ChangePasswordDto } from '@app/common/dto/users.dto';
 import { RequirePermission } from '@app/common/decorators/permissions.decortor';
-import { PermissionsGuard } from '../auth/guards/permissions.guards';
 
 @Controller('users')
 export class UsersController {
@@ -36,7 +35,6 @@ export class UsersController {
     }
 
     @UseGuards(GatewayAuthGuard)
-    @UseGuards(PermissionsGuard)
     @RequirePermission('users:view')
     @Get('/v1/user')
     getUserInfo(@Req() req: Request): any {
@@ -72,7 +70,6 @@ export class UsersController {
     }
 
     @UseGuards(GatewayAuthGuard)
-    @UseGuards(PermissionsGuard)
     @RequirePermission('users:create')
     @Post('/v1/admin/create-user')
     adminCreateUser(@Req() req: Request, @Body() body: AdminCreateUserDto): Observable<UserObject> {
@@ -82,7 +79,6 @@ export class UsersController {
     }
 
     @UseGuards(GatewayAuthGuard)
-    @UseGuards(PermissionsGuard)
     @RequirePermission('users:edit')
     @Put('/v1/admin/update-user/:id')
     adminUpdateUser(
