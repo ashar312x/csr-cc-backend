@@ -1,15 +1,16 @@
 import { Module } from '@nestjs/common';
 import { UsersModule } from './modules/users/users.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { CategoriesModule } from './modules/categories/categories.module';
+import { MetricLogsModule } from './modules/metric-logs/metric-logs.module';
 import { CommonConfigModule } from '../../../libs/common/src/config/config.module';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { FileUploadService } from '@app/common/services/file-upload.service';
 
 @Module({
-  imports: [
-    UsersModule,
-  ],
+  imports: [CommonConfigModule, UsersModule, AuthModule, CategoriesModule, MetricLogsModule],
   controllers: [],
   providers: [JwtService, ConfigService, FileUploadService],
 })
-export class AppModule { }
+export class AppModule {}

@@ -51,11 +51,14 @@ describe('FileUploadService', () => {
       expect(result.filename).toBe(expectedFileName);
       expect(result.mimetype).toBe('image/jpeg');
       expect(result.size).toBe(1024);
-      expect(result.path).toBe(expectedFilePath);           // path.normalize استعمال کرے گا
+      expect(result.path).toBe(expectedFilePath); // path.normalize استعمال کرے گا
       expect(result.url).toContain(expectedFileName);
 
       expect(fs.ensureDir).toHaveBeenCalledWith(expectedFolderPath);
-      expect(fs.writeFile).toHaveBeenCalledWith(expectedFilePath, mockFile.buffer);
+      expect(fs.writeFile).toHaveBeenCalledWith(
+        expectedFilePath,
+        mockFile.buffer,
+      );
     });
 
     it('should upload file to custom folder', async () => {
@@ -74,10 +77,16 @@ describe('FileUploadService', () => {
 
     it('should throw InternalServerErrorException when file saving fails', async () => {
       (fs.ensureDir as jest.Mock).mockResolvedValue(undefined);
-      (fs.writeFile as jest.Mock).mockRejectedValue(new Error('Disk write error'));
+      (fs.writeFile as jest.Mock).mockRejectedValue(
+        new Error('Disk write error'),
+      );
 
-      await expect(service.uploadFile(mockFile)).rejects.toThrow(InternalServerErrorException);
-      await expect(service.uploadFile(mockFile)).rejects.toThrow('Error saving file to disk');
+      await expect(service.uploadFile(mockFile)).rejects.toThrow(
+        InternalServerErrorException,
+      );
+      await expect(service.uploadFile(mockFile)).rejects.toThrow(
+        'Error saving file to disk',
+      );
     });
 
     it('should handle empty buffer gracefully', async () => {

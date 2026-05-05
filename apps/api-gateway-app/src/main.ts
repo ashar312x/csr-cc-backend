@@ -3,9 +3,14 @@ import { AppModule } from './api-gateway-app.module';
 import { ConfigService } from '@nestjs/config';
 import * as fs from 'fs';
 import * as path from 'path';
-import { TransformInterceptor, HttpExceptionFilter, LoggingInterceptor } from '@app/common';
+import {
+  TransformInterceptor,
+  HttpExceptionFilter,
+  LoggingInterceptor,
+} from '@app/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { ValidationPipe } from '@nestjs/common';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   // 1. Create a temporary context to read configurations
@@ -14,14 +19,20 @@ async function bootstrap() {
 
   const protocol = configService.get<string>('PROTOCOL') || 'http';
   let httpsOptions: any = null;
-  console.log({ protocol })
+  console.log({ protocol });
   // 2. Load SSL files if protocol is set to https
   if (protocol === 'https') {
     try {
       httpsOptions = {
-        key: fs.readFileSync(path.resolve(configService.get<string>('SSL_KEY_PATH') || '')),
-        cert: fs.readFileSync(path.resolve(configService.get<string>('SSL_CERT_PATH') || '')),
-        ca: fs.readFileSync(path.resolve(configService.get<string>('SSL_CA_PATH') || '')),
+        key: fs.readFileSync(
+          path.resolve(configService.get<string>('SSL_KEY_PATH') || ''),
+        ),
+        cert: fs.readFileSync(
+          path.resolve(configService.get<string>('SSL_CERT_PATH') || ''),
+        ),
+        ca: fs.readFileSync(
+          path.resolve(configService.get<string>('SSL_CA_PATH') || ''),
+        ),
         requestCert: false,
         rejectUnauthorized: false,
       };
@@ -37,10 +48,9 @@ async function bootstrap() {
   // 3. Create the real app with httpsOptions (if any)
 
   // const app = await NestFactory.create(AppModule, { httpsOptions });
-  const app = await NestFactory.create<NestExpressApplication>(
-    AppModule,
-    { httpsOptions }
-  );
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    httpsOptions,
+  });
 
   app.enableCors({
     origin: (origin, callback) => {
@@ -59,7 +69,8 @@ async function bootstrap() {
       }
     },
     methods: 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
-    allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
+    allowedHeaders:
+      'Origin, X-Requested-With, Content-Type, Accept, Authorization',
     credentials: true,
     maxAge: 86400,
   });
@@ -72,11 +83,38 @@ async function bootstrap() {
   app.set('query parser', 'extended'); // This enables nested object parsing
   const port = configService.get<number>('API_GATEWAY_SERVICE_PORT') || 3000;
 
-  app.useGlobalPipes(new ValidationPipe({
-    whitelist: true,               // Strips extra fields not in DTO
-    forbidNonWhitelisted: true,    // Errors if extra fields are sent
-    transform: true,               // Automatically converts types
-  }));
+  app.setGlobalPrefix('api/v1');
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+    }),
+  );
+
+  const swaggerConfig = new DocumentBuilder()
+    .setTitle('Users API')
+    .setDescription('Authentication and User Management API')
+    .setVersion('1.0')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'Authorization',
+        in: 'header',
+      },
+      'access-token',
+    )
+    .addTag('Auth', 'Public authentication endpoints')
+    .addTag('Users', 'Protected user profile endpoints')
+    .addTag('Categories', 'Category tree management')
+    .addTag('Metric Logs', 'Metric log entry management')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, swaggerConfig);
+  SwaggerModule.setup('api/docs', app, document);
 
   await app.listen(port);
 
