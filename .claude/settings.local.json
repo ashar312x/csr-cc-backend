@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Bash(git init)",
+      "Bash(Get-ChildItem -Path 'C:\\\\Projects\\\\test-project\\\\libs\\\\database\\\\src' -Recurse -File)",
+      "Bash(Select-Object -ExpandProperty FullName)",
+      "Bash(Sort-Object)",
+      "Bash(Get-ChildItem *)",
+      "Bash(npx tsc *)",
+      "Bash(xargs ls -la)",
+      "Bash(npm run *)"
+    ]
+  }
+}

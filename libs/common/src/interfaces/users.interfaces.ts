@@ -1,4 +1,3 @@
-import { CompanyObject } from "./company.interface";
 
 export interface UserCreate {
     email: string;
@@ -53,7 +52,6 @@ export interface UserObject {
     roleName?: string;
     permissions?: PermissionItem[];
     resources?: string[];
-    company?: CompanyObject;
     roles?: RoleItem[];
     isFirstLogin?: boolean;
     onboardingDetails?: {
@@ -71,7 +69,6 @@ export interface AdminObject {
     firstName?: string;
     lastName?: string;
     token?: string;
-    company?: CompanyObject;
 }
 
 export interface OnboardUserObject {

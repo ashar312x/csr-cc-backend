@@ -3,11 +3,11 @@ import { IsEmail, IsNotEmpty, MinLength, IsString, IsOptional, IsEnum } from 'cl
 export class CreateUserDto {
     @IsString()
     @IsNotEmpty({ message: 'DTO_FIRST_NAME_REQUIRED' })
-    firstName: string;
+    declare firstName: string;
 
     @IsString()
     @IsNotEmpty({ message: 'DTO_LAST_NAME_REQUIRED' })
-    lastName: string;
+    declare  lastName: string;
 
     @IsEmail({}, { message: 'DTO_INVALID_EMAIL' })
     @IsNotEmpty({ message: 'DTO_EMAIL_REQUIRED' })
@@ -101,4 +101,4 @@ export class ChangePasswordDto {
     @IsNotEmpty({ message: 'DTO_NEW_PASSWORD_REQUIRED' })
     @MinLength(6, { message: 'DTO_PASSWORD_MIN_LENGTH' })
     newPassword: string;
-}
+}
