@@ -22,6 +22,7 @@ interface MetricPagination {
 
 interface SaveMetricDto {
   categoryId: number;
+  title: string;
   value: number;
   entryDate: string;
 }
