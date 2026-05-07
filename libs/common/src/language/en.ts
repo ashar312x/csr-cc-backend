@@ -264,6 +264,7 @@ export const en = {
   METRIC_LOG_DELETED: 'Metric log deleted successfully',
   METRIC_LOG_NOT_FOUND: 'Metric log not found',
   METRIC_LOG_FORBIDDEN: 'You do not have access to this metric log',
+  METRIC_CATEGORY_MUST_BE_LEAF: 'Metric logs can only be created on leaf categories (no children)',
 
   // User Auth & Profile
   SIGNUP_SUCCESS: 'User registered successfully',

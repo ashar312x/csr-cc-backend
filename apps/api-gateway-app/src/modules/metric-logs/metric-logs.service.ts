@@ -28,10 +28,10 @@ export class MetricLogsService {
     const entryDate = dto.entryDate ?? this.today();
     return this.metricLogRepository.saveMetric({
       categoryId: dto.categoryId,
+      title: dto.title,
       value: dto.value,
       entryDate,
-      title: dto.title,
-    } as any);
+    });
   }
 
   async bulkCreate(dto: CreateBulkMetricLogDto, userId: number): Promise<{ created: number }> {

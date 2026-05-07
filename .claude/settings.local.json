@@ -12,7 +12,9 @@
       "Bash(npm run *)",
       "Bash(npx eslint *)",
       "Bash(node *)",
-      "Bash(Select-Object Name)"
+      "Bash(Select-Object Name)",
+      "Bash(Select-Object Name, PSIsContainer)",
+      "Bash(npm test *)"
     ]
   }
 }
