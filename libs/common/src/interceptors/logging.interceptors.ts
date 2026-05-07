@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { Observable, tap } from 'rxjs';
 import * as winston from 'winston';
+import * as fs from 'fs';
 import 'winston-daily-rotate-file';
 
 @Injectable()
@@ -47,6 +48,7 @@ export class LoggingInterceptor implements NestInterceptor {
   }
 
   constructor() {
+    fs.mkdirSync('logs', { recursive: true });
     this.logger = winston.createLogger({
       format: winston.format.combine(
         winston.format.timestamp(),
@@ -67,16 +69,16 @@ export class LoggingInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const ctx = context.switchToHttp();
     const request = ctx.getRequest();
-    const { method, url, body, query, headers } = request;
+    const { method, url, body, query, headers, ip } = request;
     const now = Date.now();
 
     return next.handle().pipe(
       tap({
         next: (data) => {
-          this.logRequest(method, url, body, query, data, now, null);
+          this.logRequest(method, url, body, query, headers, ip, data, now, null);
         },
         error: (err) => {
-          this.logRequest(method, url, body, query, null, now, err);
+          this.logRequest(method, url, body, query, headers, ip, null, now, err);
         },
       }),
     );
@@ -87,6 +89,8 @@ export class LoggingInterceptor implements NestInterceptor {
     url: string,
     reqData: any,
     query: any,
+    headers: any,
+    ip: string,
     resData: any,
     startTime: number,
     error: any,
@@ -101,7 +105,8 @@ export class LoggingInterceptor implements NestInterceptor {
       metadata: {
         query,
         duration,
-        userAgent: 'system-logger',
+        ip,
+        userAgent: headers?.['user-agent'] || 'unknown',
       },
       request: maskedReqData,
       response: maskedResData || null,

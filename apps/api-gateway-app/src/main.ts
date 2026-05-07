@@ -83,7 +83,9 @@ async function bootstrap() {
   app.set('query parser', 'extended'); // This enables nested object parsing
   const port = configService.get<number>('API_GATEWAY_SERVICE_PORT') || 3000;
 
-  app.setGlobalPrefix('api/v1');
+  app.setGlobalPrefix('api/v1', {
+    exclude: ['log-viewer', 'log-viewer/data'],
+  });
 
   app.useGlobalPipes(
     new ValidationPipe({
