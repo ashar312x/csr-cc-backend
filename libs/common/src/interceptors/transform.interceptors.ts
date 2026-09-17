@@ -29,10 +29,11 @@ export class TransformInterceptor<T> implements NestInterceptor<
         const rawMessage = data?.message || 'REQUEST_SUCCESS';
         // 3. Try to translate. If key doesn't exist, fallback to the raw message.
         const translatedMessage = LANGUAGES[lang]?.[rawMessage] || rawMessage;
+        const hasResult = !!data && typeof data === 'object' && 'result' in data;
         return {
           success: true,
           message: translatedMessage,
-          data: data?.result || data,
+          data: hasResult ? data.result : data,
           timestamp: new Date().toISOString(),
           statusCode: data?.statusCode || 200,
         };

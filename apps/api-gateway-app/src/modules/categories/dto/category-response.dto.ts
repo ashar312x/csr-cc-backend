@@ -20,6 +20,15 @@ export class CategoryResponseDto {
   @ApiProperty({ example: 7 })
   userId: number;
 
+  @ApiPropertyOptional({ example: 'Beneficiaries', nullable: true })
+  eventLabel?: string | null;
+
+  @ApiPropertyOptional({ example: 'HeartPulse', nullable: true, description: 'lucide-react icon name' })
+  iconName?: string | null;
+
+  @ApiPropertyOptional({ example: '#CC0000', nullable: true, description: 'hex color' })
+  iconColor?: string | null;
+
   @ApiProperty({ example: '2026-05-05T10:00:00.000Z' })
   createdAt: string;
 

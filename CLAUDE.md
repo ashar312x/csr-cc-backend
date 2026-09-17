@@ -105,4 +105,5 @@ JWT_ACCESS_SECRET
 API_GATEWAY_SERVICE_PORT   # default 3000
 PROTOCOL                   # http or https
 CORS_ORIGIN                # * or comma-separated origins
+BASE_URL                   # e.g. http://localhost:3000/ — prefixed onto FileUploadService URLs (trailing slash required)
 ```

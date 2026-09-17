@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { DatabaseModule } from '@app/database/database.module';
+import { FileUploadService } from '@app/common/services/file-upload.service';
 import { MetricLogsController } from './metric-logs.controller';
 import { MetricLogsService } from './metric-logs.service';
 
@@ -16,7 +17,7 @@ import { MetricLogsService } from './metric-logs.service';
       }),
     }),
   ],
-  providers: [MetricLogsService, ConfigService],
+  providers: [MetricLogsService, ConfigService, FileUploadService],
   controllers: [MetricLogsController],
 })
 export class MetricLogsModule {}

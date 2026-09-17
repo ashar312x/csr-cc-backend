@@ -265,6 +265,11 @@ export const en = {
   METRIC_LOG_NOT_FOUND: 'Metric log not found',
   METRIC_LOG_FORBIDDEN: 'You do not have access to this metric log',
   METRIC_CATEGORY_MUST_BE_LEAF: 'Metric logs can only be created on leaf categories (no children)',
+  METRIC_LOG_ATTACHMENT_CREATED: 'Attachment uploaded successfully',
+  METRIC_LOG_ATTACHMENT_DELETED: 'Attachment deleted successfully',
+  METRIC_LOG_ATTACHMENT_NOT_FOUND: 'Attachment not found',
+  METRIC_LOG_ATTACHMENT_FILE_REQUIRED: 'A file is required',
+  METRIC_LOG_ATTACHMENT_INVALID_TYPE: 'File type is not allowed',
 
   // User Auth & Profile
   SIGNUP_SUCCESS: 'User registered successfully',

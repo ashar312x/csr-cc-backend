@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { fn, col, Op, WhereOptions } from 'sequelize';
 import { MetricLog } from '../models/metric-log.model';
 import { Category } from '../models/category.model';
+import { MetricLogAttachment } from '../models/metric-log-attachment.model';
 
 export interface SummaryItem {
   categoryId: number;
@@ -23,7 +24,8 @@ interface MetricPagination {
 interface SaveMetricDto {
   categoryId: number;
   title: string;
-  value: number;
+  value?: number;
+  description?: string;
   entryDate: string;
 }
 
@@ -47,7 +49,10 @@ export class MetricLogRepository {
 
   findById(id: number) {
     return this.metricLogModel.findByPk(id, {
-      include: [{ model: Category, as: 'category' }],
+      include: [
+        { model: Category, as: 'category' },
+        { model: MetricLogAttachment, as: 'attachments' },
+      ],
     });
   }
 
@@ -126,6 +131,7 @@ export class MetricLogRepository {
           where: { userId },
           required: true,
         },
+        { model: MetricLogAttachment, as: 'attachments' },
       ],
       limit: filters.limit,
       offset,

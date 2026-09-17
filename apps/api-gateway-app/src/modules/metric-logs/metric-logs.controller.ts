@@ -11,11 +11,15 @@ import {
   Post,
   Query,
   Req,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import {
   ApiBearerAuth,
   ApiBody,
+  ApiConsumes,
   ApiOperation,
   ApiParam,
   ApiQuery,
@@ -110,6 +114,42 @@ export class MetricLogsController {
   async findOne(@Param('id', ParseIntPipe) id: number, @Req() req: AuthRequest) {
     const result = await this.metricLogsService.findOne(id, req.user.sub);
     return { message: 'METRIC_LOG_DETAIL', result, statusCode: HttpStatus.OK };
+  }
+
+  @Post(':id/attachments')
+  @HttpCode(HttpStatus.CREATED)
+  @UseInterceptors(FileInterceptor('file', { limits: { fileSize: 2 * 1024 * 1024 } }))
+  @ApiConsumes('multipart/form-data')
+  @ApiOperation({ summary: 'Upload an attachment (max 2MB) onto a metric log entry' })
+  @ApiParam({ name: 'id', type: Number })
+  @ApiBody({ schema: { type: 'object', properties: { file: { type: 'string', format: 'binary' } } } })
+  @ApiResponse({ status: 201, description: 'Attachment uploaded', type: MetricLogResponseDto })
+  @ApiResponse({ status: 400, description: 'Missing file, disallowed type, or too large' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 403, description: 'Entry does not belong to user' })
+  @ApiResponse({ status: 404, description: 'Entry not found' })
+  async addAttachment(
+    @Param('id', ParseIntPipe) id: number,
+    @UploadedFile() file: Express.Multer.File,
+    @Req() req: AuthRequest,
+  ) {
+    const result = await this.metricLogsService.addAttachment(id, file, req.user.sub);
+    return { message: 'METRIC_LOG_ATTACHMENT_CREATED', result, statusCode: HttpStatus.CREATED };
+  }
+
+  @Delete('attachments/:attachmentId')
+  @ApiOperation({ summary: 'Delete an attachment' })
+  @ApiParam({ name: 'attachmentId', type: Number })
+  @ApiResponse({ status: 200, description: 'Attachment deleted' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 403, description: 'Entry does not belong to user' })
+  @ApiResponse({ status: 404, description: 'Attachment not found' })
+  async removeAttachment(
+    @Param('attachmentId', ParseIntPipe) attachmentId: number,
+    @Req() req: AuthRequest,
+  ) {
+    await this.metricLogsService.removeAttachment(attachmentId, req.user.sub);
+    return { message: 'METRIC_LOG_ATTACHMENT_DELETED', result: null, statusCode: HttpStatus.OK };
   }
 
   @Patch(':id')

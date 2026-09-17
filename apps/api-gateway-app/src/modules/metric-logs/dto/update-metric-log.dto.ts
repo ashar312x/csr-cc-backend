@@ -21,6 +21,11 @@ export class UpdateMetricLogDto {
   @IsInt()
   value?: number;
 
+  @ApiPropertyOptional({ example: 'Notes, summary, links...', description: 'Free-text body; used by CC posts' })
+  @IsOptional()
+  @IsString()
+  description?: string;
+
   @ApiPropertyOptional({ example: '2026-05-04' })
   @IsOptional()
   @Matches(/^\d{4}-\d{2}-\d{2}$/, { message: 'entryDate must be in YYYY-MM-DD format' })

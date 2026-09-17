@@ -7,6 +7,8 @@ import {
 import { MetricLogsService } from './metric-logs.service';
 import { MetricLogRepository } from '@app/repositories/metric-log.repository';
 import { CategoryRepository } from '@app/repositories/category.repository';
+import { MetricLogAttachmentRepository } from '@app/repositories/metric-log-attachment.repository';
+import { FileUploadService } from '@app/common/services/file-upload.service';
 
 const mockMetricLogRepository = {
   saveMetric: jest.fn(),
@@ -20,6 +22,16 @@ const mockMetricLogRepository = {
 const mockCategoryRepository = {
   findById: jest.fn(),
   findDirectChildren: jest.fn(),
+};
+
+const mockMetricLogAttachmentRepository = {
+  create: jest.fn(),
+  findById: jest.fn(),
+  delete: jest.fn(),
+};
+
+const mockFileUploadService = {
+  uploadFile: jest.fn(),
 };
 
 const userId = 1;
@@ -51,6 +63,8 @@ describe('MetricLogsService', () => {
         MetricLogsService,
         { provide: MetricLogRepository, useValue: mockMetricLogRepository },
         { provide: CategoryRepository, useValue: mockCategoryRepository },
+        { provide: MetricLogAttachmentRepository, useValue: mockMetricLogAttachmentRepository },
+        { provide: FileUploadService, useValue: mockFileUploadService },
       ],
     }).compile();
 
@@ -294,6 +308,94 @@ describe('MetricLogsService', () => {
       });
 
       await expect(service.remove(1, userId)).rejects.toThrow(ForbiddenException);
+    });
+  });
+
+  // ─── addAttachment ───────────────────────────────────────────────────────────
+
+  describe('addAttachment', () => {
+    const file = {
+      originalname: 'report.pdf',
+      mimetype: 'application/pdf',
+      size: 1024,
+      buffer: Buffer.from('x'),
+    } as Express.Multer.File;
+
+    it('uploads and persists an attachment for a log owned by the user', async () => {
+      mockMetricLogRepository.findById.mockResolvedValue(mockLog);
+      mockFileUploadService.uploadFile.mockResolvedValue({ url: 'http://localhost:3000/uploads/metric-log-attachments/x.pdf' });
+      mockMetricLogAttachmentRepository.create.mockResolvedValue({ id: 1 });
+
+      await service.addAttachment(1, file, userId);
+
+      expect(mockFileUploadService.uploadFile).toHaveBeenCalledWith(file, 'metric-log-attachments');
+      expect(mockMetricLogAttachmentRepository.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          metricLogId: 1,
+          fileName: 'report.pdf',
+          mimeType: 'application/pdf',
+          sizeBytes: 1024,
+          storagePath: 'http://localhost:3000/uploads/metric-log-attachments/x.pdf',
+        }),
+      );
+    });
+
+    it('throws BadRequestException when no file is provided', async () => {
+      await expect(service.addAttachment(1, undefined as any, userId)).rejects.toThrow(BadRequestException);
+    });
+
+    it('throws BadRequestException for a disallowed mime type', async () => {
+      await expect(
+        service.addAttachment(1, { ...file, mimetype: 'application/x-msdownload' } as Express.Multer.File, userId),
+      ).rejects.toThrow(BadRequestException);
+    });
+
+    it('throws NotFoundException when the log does not exist', async () => {
+      mockMetricLogRepository.findById.mockResolvedValue(null);
+
+      await expect(service.addAttachment(99, file, userId)).rejects.toThrow(NotFoundException);
+    });
+
+    it('throws ForbiddenException when the log belongs to another user', async () => {
+      mockMetricLogRepository.findById.mockResolvedValue({
+        ...mockLog,
+        category: { ...mockCategory, userId: otherUserId },
+      });
+
+      await expect(service.addAttachment(1, file, userId)).rejects.toThrow(ForbiddenException);
+    });
+  });
+
+  // ─── removeAttachment ────────────────────────────────────────────────────────
+
+  describe('removeAttachment', () => {
+    it('deletes an attachment belonging to the user', async () => {
+      mockMetricLogAttachmentRepository.findById.mockResolvedValue({
+        id: 5,
+        metricLogId: 1,
+        storagePath: 'http://localhost:3000/uploads/metric-log-attachments/x.txt',
+      });
+      mockMetricLogRepository.findById.mockResolvedValue(mockLog);
+
+      await service.removeAttachment(5, userId);
+
+      expect(mockMetricLogAttachmentRepository.delete).toHaveBeenCalledWith(5);
+    });
+
+    it('throws NotFoundException when the attachment does not exist', async () => {
+      mockMetricLogAttachmentRepository.findById.mockResolvedValue(null);
+
+      await expect(service.removeAttachment(99, userId)).rejects.toThrow(NotFoundException);
+    });
+
+    it('throws ForbiddenException when the parent log belongs to another user', async () => {
+      mockMetricLogAttachmentRepository.findById.mockResolvedValue({ id: 5, metricLogId: 1 });
+      mockMetricLogRepository.findById.mockResolvedValue({
+        ...mockLog,
+        category: { ...mockCategory, userId: otherUserId },
+      });
+
+      await expect(service.removeAttachment(5, userId)).rejects.toThrow(ForbiddenException);
     });
   });
 });

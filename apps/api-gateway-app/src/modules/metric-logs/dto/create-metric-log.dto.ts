@@ -21,9 +21,15 @@ export class CreateMetricLogDto {
   @MaxLength(255)
   title: string;
 
-  @ApiProperty({ example: 42, description: 'Integer metric value' })
+  @ApiPropertyOptional({ example: 42, description: 'Integer metric value; omit for text-only entries (e.g. CC posts)' })
+  @IsOptional()
   @IsInt()
-  value: number;
+  value?: number;
+
+  @ApiPropertyOptional({ example: 'Notes, summary, links...', description: 'Free-text body; used by CC posts' })
+  @IsOptional()
+  @IsString()
+  description?: string;
 
   @ApiPropertyOptional({ example: '2026-05-05', description: 'ISO 8601 YYYY-MM-DD; defaults to today if omitted' })
   @IsOptional()

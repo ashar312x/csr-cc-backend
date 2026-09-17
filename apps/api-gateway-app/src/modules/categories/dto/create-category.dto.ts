@@ -32,4 +32,22 @@ export class CreateCategoryDto {
   @IsOptional()
   @IsBoolean()
   isSpecial?: boolean;
+
+  @ApiPropertyOptional({ example: 'Beneficiaries', maxLength: 255 })
+  @IsOptional()
+  @IsString()
+  @MaxLength(255)
+  eventLabel?: string;
+
+  @ApiPropertyOptional({ example: 'HeartPulse', maxLength: 100, description: 'lucide-react icon name' })
+  @IsOptional()
+  @IsString()
+  @MaxLength(100)
+  iconName?: string;
+
+  @ApiPropertyOptional({ example: '#CC0000', maxLength: 20, description: 'hex color' })
+  @IsOptional()
+  @IsString()
+  @MaxLength(20)
+  iconColor?: string;
 }
