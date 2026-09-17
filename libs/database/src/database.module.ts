@@ -19,7 +19,7 @@ import { ALL_REPOSITORY } from './repositories/repository';
         database: configService.get<string>('DB_NAME'),
         models: ALL_MODELS,
         autoLoadModels: true,
-        sync: { alter: { drop: false } }, // Auto-sync models with database (disable in production!)
+        sync: false, // Schema is managed via `npm run migrate` — see docs/database-plan.md
         define: {
           freezeTableName: true, // This stops Sequelize from turning 'User' into 'Users'
         },

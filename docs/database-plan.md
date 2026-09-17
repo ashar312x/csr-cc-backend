@@ -133,9 +133,11 @@ Do not start a phase until the previous one's "Done when" criteria are met.
 
 ---
 
-### Phase 1 — Sequelize CLI tooling bootstrap
+### Phase 1 — Sequelize CLI tooling bootstrap — ✅ COMPLETED
 
 **Goal:** make `sequelize-cli` runnable against this project. No schema or model changes yet.
+
+`sequelize-cli` was not actually installed (not in `package.json` at all) — added it as a devDependency in addition to the files below.
 
 **Files to add:**
 - `.sequelizerc` (repo root of `csr-cc-backend`) — point `migrations-path`, `seeders-path`, `models-path`, and `config` at `libs/database/src/migrations`, `libs/database/src/seeders`, `libs/database/src/models`, `libs/database/src/config/config.js`.
@@ -146,9 +148,11 @@ Do not start a phase until the previous one's "Done when" criteria are met.
 
 **Done when:** `npx sequelize-cli db:migrate:status` runs from the `csr-cc-backend` root without config/connection errors (it will report "no migrations" — that's expected, there are none yet).
 
+**Verified:** `npx sequelize-cli db:migrate:status` connects to the dev MySQL database (`.env.development`) and exits 0 with an empty migration list.
+
 ---
 
-### Phase 2 — Baseline migrations for the existing tables
+### Phase 2 — Baseline migrations for the existing tables — ✅ COMPLETED
 
 **Goal:** codify the *current* shape of `user`, `category`, `metric_log` (as they exist today via `sync`) as migrations, so migrations become a faithful starting point before any new columns are layered on.
 
@@ -163,9 +167,11 @@ Do not start a phase until the previous one's "Done when" criteria are met.
 
 **Done when:** starting from an empty dev database, `npm run migrate` creates `user`, `category`, `metric_log` with the same columns/constraints `sync` used to produce, and the app boots and passes existing tests against that freshly-migrated database.
 
+**Verified:** dev schema (`csr_cc_db`) confirmed empty (0 rows across all three tables), then dropped and recreated. `npm run migrate` applied all three migrations cleanly. `SHOW FULL COLUMNS`/`SHOW INDEX` confirmed the resulting `user`, `category`, `metric_log` tables match the model files and §3 exactly (columns, types, nullability, defaults, FKs, and the `(moduleType, parentId)` / `(userId)` / `(categoryId, entryDate)` / `(entryDate)` indexes). App boots successfully against the freshly-migrated database (still with `sync` on, per Phase 4) and `npm test` passes all 7 suites / 83 tests.
+
 ---
 
-### Phase 3 — Schema additions (category display columns, metric_log changes, attachments table)
+### Phase 3 — Schema additions (category display columns, metric_log changes, attachments table) — ✅ COMPLETED
 
 **Goal:** apply the actual gap-analysis changes from §3 on top of the Phase 2 baseline.
 
@@ -183,9 +189,11 @@ Do not start a phase until the previous one's "Done when" criteria are met.
 
 **Done when:** `npm run migrate` applies cleanly on top of Phase 2's tables, the three model files compile and match the new columns, and the app still boots (still relying on `sync` at this point — that's turned off in Phase 4, not here).
 
+**Verified:** `npm run migrate` applied all three new migrations (`add-category-display-columns`, `alter-metric-log-value-and-description`, `create-metric-log-attachment`) cleanly against the Phase 2 schema. `SHOW FULL COLUMNS`/`SHOW INDEX` confirmed `category.eventLabel`/`iconName`/`iconColor`, `metric_log.value` (now nullable) + `metric_log.description`, and the new `metric_log_attachment` table (with its `(metricLogId)` index) all match §3 exactly. `category.model.ts` and `metric-log.model.ts` were updated with the new columns/association, and the new `metric-log-attachment.model.ts` + `MetricLogAttachmentRepository` were added and registered in `ALL_MODELS`/`ALL_REPOSITORY`. The app boots successfully against the migrated database (still on `sync`, per plan) and `npm test` passes all 7 suites / 83 tests.
+
 ---
 
-### Phase 4 — Retire `sync`, make migrations the source of truth
+### Phase 4 — Retire `sync`, make migrations the source of truth — ✅ COMPLETED
 
 **Goal:** stop `database.module.ts` from auto-altering the schema, so `npm run migrate` is the only way schema changes happen from here on.
 
@@ -194,9 +202,11 @@ Do not start a phase until the previous one's "Done when" criteria are met.
 
 **Done when:** with `sync` off, the app boots successfully against a database that has only ever been built via `npm run migrate` (Phases 2 + 3), and all existing tests still pass.
 
+**Verified:** `libs/database/src/database.module.ts`'s `sync` option changed from `{ alter: { drop: false } }` to `false`. `npx sequelize-cli db:migrate:status` confirmed the dev database (`csr_cc_db`) has all six migrations from Phases 2–3 applied (`up`). With `sync` off, the app boots cleanly against that migrated database (`npm run start:dev:gateway` — all modules/routes initialize with no schema errors) and `npm test` passes all 7 suites / 83 tests.
+
 ---
 
-### Phase 5 — Seeders
+### Phase 5 — Seeders — ✅ COMPLETED
 
 **Goal:** implement the `seed` script `package.json` already declares.
 
@@ -206,6 +216,8 @@ Do not start a phase until the previous one's "Done when" criteria are met.
   - The default category trees currently hardcoded in the frontend as `defaultCategories` (CSR) and `defaultCCCategories` (CC) in `csr-cc-frontend/src/lib/csrData.ts` — port their `name`/`parentId`/`isSpecial`/`eventLabel`/`iconName`/`iconColor` values across, owned by the seeded admin user, with the correct `moduleType` per tree.
 
 **Done when:** `npm run seed` runs against a freshly-migrated (Phases 2–4) database and produces one admin user plus the full default CSR + CC category trees, matching what the frontend currently hardcodes.
+
+**Verified:** `libs/database/src/seeders/seed.ts` added as a standalone script (its own `Sequelize` instance via `sequelize-typescript` + `ALL_MODELS`, not the Nest DI container — this is a `ts-node` entrypoint outside the app's bootstrap). It hashes `SEED_ADMIN_PASSWORD` with `bcryptjs` at cost 10 (matching `AuthService.signUp`) and `findOrCreate`s an admin user from `SEED_ADMIN_NAME`/`SEED_ADMIN_EMAIL`/`SEED_ADMIN_PASSWORD` (added to `.env.development`, not hardcoded), then `findOrCreate`s the five CSR and five CC default categories — `name`/`iconName`/`iconColor` ported verbatim from `defaultCategories`/`defaultCCCategories` in `csr-cc-frontend/src/lib/csrData.ts`. Both source arrays are flat (no `parentId`, no `eventLabel`, no `isSpecial` set on any entry today), so all ten are seeded as top-level categories with `parentId: null`, `eventLabel: null`, `isSpecial: false` — there is no tree/nesting to port yet. Owned by the seeded admin, `moduleType` `CSR`/`CC` respectively. `npm run seed` was run twice against the Phase 2–4 dev database: the first run created 1 user + 10 categories, the second left both counts unchanged (`findOrCreate` makes reruns safe). `npm test` still passes all 7 suites / 83 tests.
 
 ## Out of scope
 

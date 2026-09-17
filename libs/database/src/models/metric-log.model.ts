@@ -7,8 +7,10 @@ import {
   DataType,
   ForeignKey,
   BelongsTo,
+  HasMany,
 } from 'sequelize-typescript';
 import { Category } from './category.model';
+import { MetricLogAttachment } from './metric-log-attachment.model';
 
 @Table({
   tableName: 'metric_log',
@@ -28,12 +30,22 @@ export class MetricLog extends Model {
   @Column({ type: DataType.STRING, allowNull: false })
   declare title: string;
 
-  @Column({ type: DataType.INTEGER, allowNull: false })
+  @Column({ type: DataType.INTEGER, allowNull: true })
   declare value: number;
+
+  @Column({ type: DataType.TEXT, allowNull: true })
+  declare description: string;
 
   @Column({ type: DataType.DATEONLY, allowNull: false })
   declare entryDate: string;
 
   @BelongsTo(() => Category, { foreignKey: 'categoryId', as: 'category' })
   declare category: Category;
+
+  @HasMany(() => MetricLogAttachment, {
+    foreignKey: 'metricLogId',
+    as: 'attachments',
+    onDelete: 'CASCADE',
+  })
+  declare attachments: MetricLogAttachment[];
 }

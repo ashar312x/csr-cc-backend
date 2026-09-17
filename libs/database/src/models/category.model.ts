@@ -47,6 +47,15 @@ export class Category extends Model {
   @Column({ type: DataType.INTEGER, allowNull: false })
   declare userId: number;
 
+  @Column({ type: DataType.STRING(255), allowNull: true })
+  declare eventLabel: string;
+
+  @Column({ type: DataType.STRING(100), allowNull: true })
+  declare iconName: string;
+
+  @Column({ type: DataType.STRING(20), allowNull: true })
+  declare iconColor: string;
+
   @BelongsTo(() => Category, { foreignKey: 'parentId', as: 'parent' })
   declare parent: Category;
 
